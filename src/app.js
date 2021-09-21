@@ -5,10 +5,12 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const sequelize = require('./database-connection')
 
-const postRouter = require('./routes/post')
-const userRouter = require('./routes/user')
+const postsRouter = require('./routes/posts')
+const usersRouter = require('./routes/users')
+const commentsRouter = require('./routes/comments')
 
 sequelize.sync().then(() => console.log('Database connection established!'))
+
 const app = express()
 
 if (app.get('env') == 'development') {
@@ -30,8 +32,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/post', postRouter)
-app.use('/user', userRouter)
+app.use('/posts', postsRouter)
+app.use('/users', usersRouter)
+app.use('/comments', commentsRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
